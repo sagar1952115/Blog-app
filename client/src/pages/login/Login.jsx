@@ -22,10 +22,13 @@ export default function Login() {
     }
     dispatch({ type: "LOGIN_START" });
     try {
-      const res = await axios.post("/auth/login", {
-        username: userRef.current.value,
-        password: passwordRef.current.value,
-      });
+      const res = await axios.post(
+        "https://blogapp-a680.onrender.com/api/auth/login",
+        {
+          username: userRef.current.value,
+          password: passwordRef.current.value,
+        }
+      );
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
     } catch (err) {
       toast.error("Something went wrong.");

@@ -6,14 +6,15 @@ import "./homepage.css";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-
 export default function Homepage() {
   const [posts, setPosts] = useState([]);
   const { search } = useLocation();
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await axios.get("/posts" + search);
+      const res = await axios.get(
+        "https://blogapp-a680.onrender.com/api/posts" + search
+      );
       setPosts(res.data);
     };
     fetchPosts();
@@ -22,7 +23,7 @@ export default function Homepage() {
     <>
       <Header />
       <div className="home">
-      <Posts posts={posts} />
+        <Posts posts={posts} />
         <Sidebar />
       </div>
     </>
