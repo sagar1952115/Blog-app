@@ -4,7 +4,6 @@ import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
 import { Context } from "../../context/Context";
 import "./SinglePost.css";
-import Tohtml from "../Tohtml";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import HTMLReactParser from "html-react-parser";

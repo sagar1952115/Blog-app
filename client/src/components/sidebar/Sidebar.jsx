@@ -43,24 +43,34 @@ export default function Sidebar() {
           <a
             href="https://www.facebook.com/profile.php?id=100078504875184"
             target="_blank"
+            rel="noreferrer"
           >
             {" "}
             <i className="topIcon fab fa-facebook-square"></i>
           </a>
-          <a href="https://www.instagram.com/sagar_kumar_821/" target="_blank">
+          <a
+            href="https://www.instagram.com/sagar_kumar_821/"
+            rel="noreferrer"
+            target="_blank"
+          >
             {" "}
             <i className="topIcon fab fa-instagram-square"></i>
           </a>
-          <a href="https://pin.it/6ecbL43" target="_blank">
+          <a href="https://pin.it/6ecbL43" target="_blank" rel="noreferrer">
             <i className="topIcon fab fa-pinterest-square"></i>
           </a>
-          <a href="https://twitter.com/Sagar_kumar821" target="_blank">
+          <a
+            href="https://twitter.com/Sagar_kumar821"
+            target="_blank"
+            rel="noreferrer"
+          >
             {" "}
             <i className="topIcon fab fa-twitter-square"></i>
           </a>
           <a
             href="https://www.linkedin.com/in/sagar-kumar-73a25018b/"
             target="_blank"
+            rel="noreferrer"
           >
             {" "}
             <i className="topIcon fab fa-linkedin"></i>

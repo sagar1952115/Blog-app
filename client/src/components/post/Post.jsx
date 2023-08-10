@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import HTMLReactParser, { htmlToDOM } from "html-react-parser";
+import HTMLReactParser from "html-react-parser";
 import "./post.css";
 
 export default function Post({ post }) {
@@ -10,7 +10,7 @@ export default function Post({ post }) {
       <div className="postInfo">
         <div className="postCats">
           {post.categories.map((c) => {
-            <span className="postCat">{c.name}</span>;
+            return <span className="postCat">{c.name}</span>;
           })}
         </div>
         <span className="postTitle">
