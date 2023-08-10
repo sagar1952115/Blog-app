@@ -1,17 +1,32 @@
 import axios from "axios";
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
 import "./register.css";
+import { TbLoader2 } from "react-icons/tb";
 
 export default function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
+  const [isFetching, setIsfetching] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(false);
+    if (username === "") {
+      toast.error("Enter valid user name");
+      return;
+    }
+    if (email === "") {
+      toast.error("Enter valid Email");
+      return;
+    }
+    if (password === "") {
+      toast.error("Enter Password");
+      return;
+    }
+    setIsfetching(true);
     try {
       const res = await axios.post("/auth/register", {
         username,
@@ -19,8 +34,10 @@ export default function Register() {
         password,
       });
       res.data && window.location.replace("/login");
+      setIsfetching(false);
     } catch (err) {
-      setError(true);
+      toast.error("Something went wrong");
+      setIsfetching(false);
     }
   };
   return (
@@ -31,6 +48,7 @@ export default function Register() {
         <input
           type="text"
           className="registerInput"
+          disabled={isFetching}
           placeholder="Enter your username..."
           onChange={(e) => setUsername(e.target.value)}
         />
@@ -38,18 +56,20 @@ export default function Register() {
         <input
           type="text"
           className="registerInput"
+          disabled={isFetching}
           placeholder="Enter your email..."
           onChange={(e) => setEmail(e.target.value)}
         />
         <label>Password</label>
         <input
           type="password"
+          disabled={isFetching}
           className="registerInput"
           placeholder="Enter your password..."
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button className="registerButton" type="submit">
-          Register
+        <button className="registerButton" type="submit" disabled={isFetching}>
+          {isFetching ? <TbLoader2 className="loader" /> : "Register"}
         </button>
       </form>
       <button className="registerLoginButton">
@@ -57,7 +77,7 @@ export default function Register() {
           Login
         </Link>
       </button>
-      {error && <span style={{color:"red", marginTop:"10px"}}>Something went wrong!</span>}
+      <ToastContainer />
     </div>
   );
 }

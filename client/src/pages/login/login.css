@@ -42,7 +42,7 @@
   padding: 10px;
 }
 
-.loginButton:disabled{
+.loginButton:disabled {
   cursor: not-allowed;
   background-color: rgb(252, 173, 173);
 }
@@ -57,4 +57,18 @@
   padding: 10px;
   color: white;
   border-radius: 10px;
+}
+
+.loader {
+  animation: spin 1s linear infinite;
+  font-weight: 800;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

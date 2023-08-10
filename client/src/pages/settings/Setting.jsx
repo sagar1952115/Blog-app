@@ -2,6 +2,9 @@ import "./setting.css";
 import Sidebar from "../../components/sidebar/Sidebar";
 import { useContext, useState } from "react";
 import { Context } from "../../context/Context";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { TbLoader2 } from "react-icons/tb";
 import axios from "axios";
 
 export default function Settings() {
@@ -9,10 +12,10 @@ export default function Settings() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [success, setSuccess] = useState(false);
 
+  const [isLoading, setIsloading] = useState(false);
   const { user, dispatch } = useContext(Context);
-  const PF = "http://localhost:5000/images/"
+  const PF = "http://localhost:5000/images/";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,13 +34,19 @@ export default function Settings() {
       updatedUser.ProfilePic = filename;
       try {
         await axios.post("/upload", data);
-      } catch (err) {}
+      } catch (err) {
+        console.log(err);
+      }
     }
     try {
+      setIsloading(true);
       const res = await axios.put("/users/" + user._id, updatedUser);
-      setSuccess(true);
+      toast.error("Profile updated successfully");
       dispatch({ type: "UPDATE_SUCCESS", payload: res.data });
+      setIsloading(false);
     } catch (err) {
+      setIsloading(false);
+      toast.error("Error occured while updating profile!!!");
       dispatch({ type: "UPDATE_FAILURE" });
     }
   };
@@ -60,6 +69,7 @@ export default function Settings() {
             </label>
             <input
               type="file"
+              disabled={isLoading}
               id="fileInput"
               style={{ display: "none" }}
               onChange={(e) => setFile(e.target.files[0])}
@@ -69,32 +79,29 @@ export default function Settings() {
           <input
             type="text"
             placeholder={user.username}
+            disabled={isLoading}
             onChange={(e) => setUsername(e.target.value)}
           />
           <label>Email</label>
           <input
             type="email"
+            disabled={isLoading}
             placeholder={user.email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <label>Password</label>
           <input
             type="password"
+            disabled={isLoading}
             onChange={(e) => setPassword(e.target.value)}
           />
           <button className="settingsSubmitButton" type="submit">
-            Update
+            {isLoading ? <TbLoader2 className="loader" /> : "Update"}
           </button>
-          {success && (
-            <span
-              style={{ color: "green", textAlign: "center", marginTop: "20px" }}
-            >
-              Profile has been updated...
-            </span>
-          )}
         </form>
       </div>
       <Sidebar />
+      <ToastContainer />
     </div>
   );
 }

@@ -4,6 +4,12 @@ import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
 import { Context } from "../../context/Context";
 import "./SinglePost.css";
+import Tohtml from "../Tohtml";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import HTMLReactParser from "html-react-parser";
+import { TbLoader2 } from "react-icons/tb";
+import JoditEditor from "jodit-react";
 
 export default function SinglePost() {
   const location = useLocation();
@@ -14,17 +20,30 @@ export default function SinglePost() {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [updateMode, setUpdateMode] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const getPost = async () => {
       const res = await axios.get("/posts/" + path);
+      console.log(res);
       setPost(res.data);
       setTitle(res.data.title);
       setDesc(res.data.desc);
     };
     getPost();
   }, [path]);
-
+  const config = {
+    readonly: false, // all options from https://xdsoft.net/jodit/doc/,
+    uploader: {
+      url: "https://xdsoft.net/jodit/finder/?action=fileUpload",
+    },
+    filebrowser: {
+      ajax: {
+        url: "https://xdsoft.net/jodit/finder/",
+      },
+      height: 580,
+    },
+  };
   const handleDelete = async () => {
     try {
       await axios.delete(`/posts/${post._id}`, {
@@ -36,13 +55,20 @@ export default function SinglePost() {
 
   const handleUpdate = async () => {
     try {
+      setIsLoading(true);
       await axios.put(`/posts/${post._id}`, {
         username: user.username,
         title,
         desc,
       });
-      setUpdateMode(false)
-    } catch (err) {}
+      toast.success("Post updated successfully");
+      setIsLoading(false);
+      setUpdateMode(false);
+    } catch (err) {
+      setIsLoading(false);
+
+      console.log(err);
+    }
   };
 
   return (
@@ -88,20 +114,23 @@ export default function SinglePost() {
           </span>
         </div>
         {updateMode ? (
-          <textarea
-            className="singlePostDescInput"
+          <JoditEditor
             value={desc}
-            onChange={(e) => setDesc(e.target.value)}
+            config={config}
+            tabIndex={1} // tabIndex of textarea
+            onBlur={(newContent) => setDesc(newContent)} // preferred to use only this option to update the content for performance reasons
+            onChange={(newContent) => {}}
           />
         ) : (
-          <p className="singlePostDesc">{desc}</p>
+          <div>{HTMLReactParser(desc)}</div>
         )}
         {updateMode && (
           <button className="singlePostButton" onClick={handleUpdate}>
-            Update
+            {isLoading ? <TbLoader2 className="loader" /> : "Update"}
           </button>
         )}
       </div>
+      <ToastContainer />
     </div>
   );
 }
