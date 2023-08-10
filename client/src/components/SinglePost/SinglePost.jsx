@@ -15,7 +15,7 @@ export default function SinglePost() {
   const location = useLocation();
   const path = location.pathname.split("/")[2];
   const [post, setPost] = useState({});
-  const PF = "http://localhost:5000/images/";
+  const PF = "https://blogapp-a680.onrender.com/images/";
   const { user } = useContext(Context);
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
@@ -24,7 +24,9 @@ export default function SinglePost() {
 
   useEffect(() => {
     const getPost = async () => {
-      const res = await axios.get("/posts/" + path);
+      const res = await axios.get(
+        "https://blogapp-a680.onrender.com/api/posts/" + path
+      );
       console.log(res);
       setPost(res.data);
       setTitle(res.data.title);
@@ -46,9 +48,12 @@ export default function SinglePost() {
   };
   const handleDelete = async () => {
     try {
-      await axios.delete(`/posts/${post._id}`, {
-        data: { username: user.username },
-      });
+      await axios.delete(
+        `https://blogapp-a680.onrender.com/api/posts/${post._id}`,
+        {
+          data: { username: user.username },
+        }
+      );
       window.location.replace("/");
     } catch (err) {}
   };
@@ -56,11 +61,14 @@ export default function SinglePost() {
   const handleUpdate = async () => {
     try {
       setIsLoading(true);
-      await axios.put(`/posts/${post._id}`, {
-        username: user.username,
-        title,
-        desc,
-      });
+      await axios.put(
+        `https://blogapp-a680.onrender.com/api/posts/${post._id}`,
+        {
+          username: user.username,
+          title,
+          desc,
+        }
+      );
       toast.success("Post updated successfully");
       setIsLoading(false);
       setUpdateMode(false);

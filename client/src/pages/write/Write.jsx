@@ -46,14 +46,17 @@ export default function Write({ placeholder }) {
       data.append("file", file);
       newPost.photo = filename;
       try {
-        await axios.post("/upload", data);
+        await axios.post("https://blogapp-a680.onrender.com/api/upload", data);
       } catch (err) {
         toast.error("Error Occured while file upload!!!");
       }
     }
     try {
       setIsloading(true);
-      const res = await axios.post("/posts", newPost);
+      const res = await axios.post(
+        "https://blogapp-a680.onrender.com/api/posts",
+        newPost
+      );
       toast.success("Post created successfully.");
       setIsloading(false);
       window.location.replace("/post/" + res.data._id);

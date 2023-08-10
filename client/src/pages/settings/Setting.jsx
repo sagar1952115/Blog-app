@@ -33,7 +33,7 @@ export default function Settings() {
       data.append("file", file);
       updatedUser.ProfilePic = filename;
       try {
-        await axios.post("/upload", data);
+        await axios.post("https://blogapp-a680.onrender.com/api/upload", data);
       } catch (err) {
         console.log(err);
       }
